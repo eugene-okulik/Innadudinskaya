@@ -19,7 +19,7 @@ my_dict['dict'] = {'one': 'value1', 'two': 'value2',
                    'three': 'value3', 'four': 'value4',
                    'i am a tuple': 'value6'}
 
-my_dict ['set'].add('a6')
-my_dict ['set'].pop()
+my_dict['set'].add('a6')
+my_dict['set'].pop()
 
-print (my_dict)
+print(my_dict)
