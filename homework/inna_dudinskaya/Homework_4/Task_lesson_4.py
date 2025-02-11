@@ -1,10 +1,9 @@
-my_dict = {'tuple': (1, 2, 3, 4, 5)
-    , 'list': [6, 7, 8, 9, 10]
-    , 'dict': {'one': 'value1', 'two': 'value2',
-               'three': 'value3', 'four': 'value4',
-               'five': 'value5'}
-    , 'set': {'a1', 'a2', 'a3', 'a4', 'a5'}
-           }
+my_dict = {'tuple': (1, 2, 3, 4, 5),
+           'list': [6, 7, 8, 9, 10],
+           'dict': {'one': 'value1', 'two': 'value2',
+                    'three': 'value3', 'four': 'value4',
+                    'five': 'value5'},
+           'set': {'a1', 'a2', 'a3', 'a4', 'a5'}}
 
 print(my_dict['tuple'][-1])
 
