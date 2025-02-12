@@ -10,13 +10,8 @@ print(my_dict['tuple'][-1])
 my_dict['list'].append(25)
 my_dict['list'].pop(1)
 
-my_dict['dict'] = {'one': 'value1', 'two': 'value2',
-                   'three': 'value3', 'four': 'value4',
-                   'five': 'value5', 'i am a tuple': 'value6'}
-
-my_dict['dict'] = {'one': 'value1', 'two': 'value2',
-                   'three': 'value3', 'four': 'value4',
-                   'i am a tuple': 'value6'}
+my_dict['dict'][('i am a tuple',)] = 'value6'
+my_dict['dict'].pop('one')
 
 my_dict['set'].add('a6')
 my_dict['set'].pop()
