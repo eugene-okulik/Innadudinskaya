@@ -1,3 +1,8 @@
+import sys
+
+sys.set_int_max_str_digits(0)
+
+
 def progression(limit):
     f0 = 0
     f1 = 1
