@@ -109,4 +109,3 @@ print(bouquet)
 print("\nСортировка по стоимости:")
 bouquet.sort_by_price()
 print(bouquet)
-
