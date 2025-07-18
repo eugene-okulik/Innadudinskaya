@@ -1,4 +1,4 @@
-INSERT into students (name, second_name, group_id) values ('Inna', 'Dudinskaya', 1)
+INSERT into students (name, second_name, group_id) values ('Inna', 'Dudinskaya', NULL)
 SELECT * FROM students WHERE second_name='Dudinskaya' -- находим здесь id созданного student
 INSERT into books (title, taken_by_student_id) values ('Python for AQA', 20842)
 INSERT into books (title, taken_by_student_id) values ('Python for beginners', 20842)
@@ -45,4 +45,5 @@ join books on students.id=books.taken_by_student_id
 join marks on students.id=marks.student_id
 join lessons on marks.lesson_id=lessons.id
 join subjets on lessons.subject_id=subjets.id where students.id=20842 -- вывели всю информацию о студенте
+
 
