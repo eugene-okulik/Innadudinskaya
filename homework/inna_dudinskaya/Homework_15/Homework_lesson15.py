@@ -69,7 +69,7 @@ def student_grades(student_id, cursor):
 
 
 def student_books(student_id, cursor):
-    cursor.execute(f'SELECT title FROM books where taken_by_student_id=%s', (student_id,))
+    cursor.execute('SELECT title FROM books where taken_by_student_id=%s', (student_id,))
     books = cursor.fetchall()
     print(f'книги студента: {books}')
 
