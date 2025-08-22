@@ -34,31 +34,27 @@ def update_student(student_id, group_id, cursor):
     cursor.execute('UPDATE students SET group_id= %s where id = %s', (group_id, student_id))
 
 
-def subjects_creation(cursor):
-    insert_subjects = 'INSERT into subjects (title) values (%s)'
-    cursor.executemany(
-        insert_subjects, [
-            ('API testing',),
-            ('UI testing',)
-        ]
-    )
+def subjects_creation(cursor, subject_name):
+    cursor.execute("INSERT into subjects (title) values (%s)", (subject_name,))
+    subject_id_db = cursor.lastrowid
+    cursor.execute(f'SElECT * from subjects where id = {subject_id_db}')
+    print(cursor.fetchone())
+    return subject_id_db
 
 
-def lessons_creation(rowSubject, cursor):
-    insert_lesson = "INSERT into lessons(title, subject_id) values(%s, %s)"
-    cursor.executemany(
-        insert_lesson, [
-            ('bla', rowSubject['id']),
-            ('be', rowSubject['id'])
-        ]
-    )
+def lessons_creation(cursor, lesson_name, subject_id):
+    cursor.execute("INSERT into lessons(title, subject_id) values(%s, %s)", (lesson_name, subject_id))
+    lesson_id_db = cursor.lastrowid
+    cursor.execute(f'SElECT * from lessons where id = {lesson_id_db}')
+    print(cursor.fetchone())
+    return lesson_id_db
 
 
-def marks_creation(rowLessons, cursor):
+def marks_creation(lesson_id, cursor):
     insert_marks = "INSERT into marks(value, lesson_id, student_id) values(%s, %s, %s)"
     # Создаем по 1 случайной оценке от 7 до 10 для каждого занятия
     marks = [str(random.randint(7, 10)) for _ in range(1)]
-    data = [(mark, rowLessons['id'], student_id) for mark in marks]
+    data = [(mark, lesson_id, student_id) for mark in marks]
     cursor.executemany(insert_marks, data)
 
 
@@ -106,23 +102,18 @@ group_id = group_creation(cursor)
 
 update_student(student_id, group_id, cursor)
 
-subjects_creation(cursor)
+subject_id1 = subjects_creation(cursor, 'API testing', )
+subject_id2 = subjects_creation(cursor, 'UI testing', )
 
-cursor.execute("SELECT id, title FROM subjects WHERE title IN (%s, %s) ORDER BY id DESC LIMIT 2",
-               ('API testing', 'UI testing'))
-subjects = cursor.fetchall()
+lesson_id1 = lessons_creation(cursor, 'lesson1', subject_id1)
+lesson_id2 = lessons_creation(cursor, 'lesson2', subject_id1)
+lesson_id3 = lessons_creation(cursor, 'lesson3', subject_id2)
+lesson_id4 = lessons_creation(cursor, 'lesson4', subject_id2)
 
-for rowSubject in subjects:
-    print(f"'{rowSubject['title']}' имеет ID: {rowSubject['id']}")
-    lessons_creation(rowSubject, cursor)
-
-cursor.execute("SELECT id, title, subject_id FROM lessons WHERE title IN (%s, %s) ORDER BY id DESC LIMIT 4",
-               ('bla', 'be'))
-lessons = cursor.fetchall()
-
-for rowLessons in lessons:
-    print(f"'{rowLessons['title']}' имеет ID: {rowLessons['id']} и относится к предмету {rowLessons['subject_id']}")
-    marks_creation(rowLessons, cursor)
+marks_creation(lesson_id1, cursor)
+marks_creation(lesson_id2, cursor)
+marks_creation(lesson_id3, cursor)
+marks_creation(lesson_id4, cursor)
 
 student_grades(student_id, cursor)
 
