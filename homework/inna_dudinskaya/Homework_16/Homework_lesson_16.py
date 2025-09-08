@@ -22,9 +22,9 @@ def student_count(student_name, student_second_name, group_title, book_title, su
     join books on students.id=books.taken_by_student_id
     join marks on students.id=marks.student_id
     join lessons on marks.lesson_id=lessons.id
-    join subjects on lessons.subject_id=subjects.id 
+    join subjects on lessons.subject_id=subjects.id
     where
-    students.name=%s 
+    students.name=%s
     and students.second_name=%s
     and `groups`.title =%s
     and books.title=%s
