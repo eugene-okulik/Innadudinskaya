@@ -16,29 +16,6 @@ def text():
     print('Testing completed')
 
 
-@pytest.mark.critical
-@pytest.mark.parametrize("object_name", [
-    "Inna test object 1",
-    "Inna test object 2",
-    "Inna test object 3"
-])
-def test_post_an_object(object_name, text):
-    body = {
-        "data": {
-            "color": "magenta",
-            "size": "medium"
-        },
-        "name": object_name
-    }
-    headers = {'Content-Type': 'application/json'}
-
-    response = requests.post('http://objapi.course.qa-practice.com/object',
-                             json=body,
-                             headers=headers
-                             )
-    assert response.status_code == 200
-
-
 @pytest.fixture()
 def new_object_id():
     body = {
@@ -62,8 +39,31 @@ def new_object_id():
     requests.delete(f'http://objapi.course.qa-practice.com/object/{object_id}')
 
 
+@pytest.mark.critical
+@pytest.mark.parametrize("object_name", [
+    "Inna test object 1",
+    "Inna test object 2",
+    "Inna test object 3"
+])
+def test_post_an_object(object_name, text):
+    body = {
+        "data": {
+            "color": "magenta",
+            "size": "medium"
+        },
+        "name": object_name
+    }
+    headers = {'Content-Type': 'application/json'}
+
+    response = requests.post('http://objapi.course.qa-practice.com/object',
+                             json=body,
+                             headers=headers
+                             )
+    assert response.status_code == 200
+
+
 @pytest.mark.medium
-def test_get_one_post(new_object_id):
+def test_get_one_object(new_object_id):
     response = requests.get(f'http://objapi.course.qa-practice.com/object/{new_object_id}').json()
     assert response['id'] == new_object_id
 
