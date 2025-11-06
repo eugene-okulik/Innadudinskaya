@@ -1,5 +1,6 @@
 import requests
 import pytest
+import allure
 
 
 @pytest.fixture(autouse=True)
@@ -39,6 +40,8 @@ def new_object_id():
     requests.delete(f'http://objapi.course.qa-practice.com/object/{object_id}')
 
 
+@allure.feature('Objects')
+@allure.story('Manipulate Objects')
 @pytest.mark.critical
 @pytest.mark.parametrize("object_name", [
     "Inna test object 1",
@@ -46,28 +49,36 @@ def new_object_id():
     "Inna test object 3"
 ])
 def test_post_an_object(object_name, text):
-    body = {
-        "data": {
-            "color": "magenta",
-            "size": "medium"
-        },
-        "name": object_name
-    }
-    headers = {'Content-Type': 'application/json'}
+    with allure.step('Prepare test data'):
+        body = {
+            "data": {
+                "color": "magenta",
+                "size": "medium"
+            },
+            "name": object_name
+        }
+        headers = {'Content-Type': 'application/json'}
+    with allure.step('Run request to create an object'):
+        response = requests.post('http://objapi.course.qa-practice.com/object',
+                                 json=body,
+                                 headers=headers
+                                 )
+    with allure.step('Check response code is 200'):
+        assert response.status_code == 200
 
-    response = requests.post('http://objapi.course.qa-practice.com/object',
-                             json=body,
-                             headers=headers
-                             )
-    assert response.status_code == 200
 
-
+@allure.feature('Objects')
+@allure.story('Get an Object')
 @pytest.mark.medium
 def test_get_one_object(new_object_id):
-    response = requests.get(f'http://objapi.course.qa-practice.com/object/{new_object_id}').json()
-    assert response['id'] == new_object_id
+    with allure.step(f'Run get request for object with id {new_object_id}'):
+        response = requests.get(f'http://objapi.course.qa-practice.com/object/{new_object_id}').json()
+    with allure.step(f'Check that object id is {new_object_id}'):
+        assert response['id'] == new_object_id
 
 
+@allure.feature('Objects')
+@allure.story('Manipulate Objects')
 def test_put_an_object(new_object_id):
     body = {
         "data": {
@@ -87,6 +98,8 @@ def test_put_an_object(new_object_id):
     assert response['data']['size'] == 'small'
 
 
+@allure.feature('Objects')
+@allure.story('Manipulate Objects')
 def test_patch_an_object(new_object_id):
     body = {
         "data": {
@@ -104,6 +117,9 @@ def test_patch_an_object(new_object_id):
     assert response['data']['size'] == 'large'
 
 
+@allure.feature('Objects')
+@allure.story('Manipulate Objects')
+@allure.title('Удаление объекта')
 def test_delete_an_object(new_object_id):
     response = requests.delete(f'http://objapi.course.qa-practice.com/object/{new_object_id}')
     print(response)
