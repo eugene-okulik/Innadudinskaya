@@ -29,7 +29,7 @@ class Endpoint:
     def check_response_status_code_is_correct(self, code=200):
         assert self.response.status_code == code
 
-    @allure.step(f'Check that object id is correct')
+    @allure.step('Check that object id is correct')
     def check_object_id_is_correct(self, init_response, result_response):
         assert init_response.json()['id'] == result_response.json()['id']
         assert init_response.json()['data']['color'] == result_response.json()['data']['color']
