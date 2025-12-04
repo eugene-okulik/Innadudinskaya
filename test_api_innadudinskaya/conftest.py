@@ -1,5 +1,5 @@
 import pytest
-import requests
+import allure
 
 from test_api_innadudinskaya.endpoints.create_an_object import CreateObject
 from test_api_innadudinskaya.endpoints.get_an_object import GetObject
@@ -33,8 +33,8 @@ def delete_object_endpoint():
     return DeleteObject()
 
 
-@pytest.fixture(scope="session")
-def new_object():
+@pytest.fixture()
+def new_object(create_object_endpoint, delete_object_endpoint):
     body = {
         "data": {
             "color": "magenta",
@@ -42,15 +42,13 @@ def new_object():
         },
         "name": "Inna test object"
     }
-    headers = {'Content-Type': 'application/json'}
-
-    response = requests.post('http://objapi.course.qa-practice.com/object',
-                             json=body,
-                             headers=headers
-                             )
-
+    response = create_object_endpoint.create_new_object(body)
     object_id = response.json()['id']
-    print(f"Created object with ID: {object_id}")
+    with allure.step('Test object creation'):
+        print(f"Created object with ID: {object_id}")
+
     yield response
-    print(f'\nDeleting object with ID: {object_id}')
-    requests.delete(f'http://objapi.course.qa-practice.com/object/{object_id}')
+
+    with allure.step('Test object deletion'):
+        delete_object_endpoint.delete_an_object(response)
+        print(f'\nDeleting object with ID: {object_id}')

@@ -21,7 +21,7 @@ def test_post_an_object(create_object_endpoint, data):
 
 def test_get_one_object(get_object_endpoint, new_object):
     get_object_endpoint.get_an_object(new_object)
-    get_object_endpoint.check_object_id_is_correct(new_object)
+    get_object_endpoint.check_object_id_data(new_object)
     get_object_endpoint.check_response_status_code_is_correct()
 
 
@@ -35,19 +35,18 @@ def test_put_an_object(update_object_endpoint_put, new_object):
     }
     update_object_endpoint_put.make_changes_in_object_put(body, new_object)
     update_object_endpoint_put.check_response_status_code_is_correct()
-    update_object_endpoint_put.check_response_name_and_data_are_correct(body)
+    update_object_endpoint_put.check_response_name_and_data(body)
 
 
-def test_patch_an_object(update_object_endpoint_patch, new_object):
+def test_patch_an_object(update_object_endpoint_patch, new_object, get_object_endpoint):
     body = {
-        "data": {
-            "size": "large"
-        },
         "name": "Inna test object new111"
     }
     update_object_endpoint_patch.make_changes_in_object_patch(body, new_object)
     update_object_endpoint_patch.check_response_status_code_is_correct()
-    update_object_endpoint_patch.check_response_name_and_size_are_correct(body)
+    get_object_endpoint.get_an_object(update_object_endpoint_patch)
+    update_object_endpoint_patch.check_response_name_changed(body)
+    update_object_endpoint_patch.check_response_fields_not_changed(new_object, get_object_endpoint)
 
 
 def test_delete_an_object(delete_object_endpoint, new_object):
