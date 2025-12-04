@@ -10,7 +10,7 @@ class GetObject(Endpoint):
     def get_an_object(self, init_resp):
         try:
             element_id = init_resp.json()['id']
-        except (ValueError, TypeError) as e:
+        except (ValueError, TypeError):
             element_id = init_resp.json['id']
         self.response = requests.get(f'{self.url}/{element_id}')
         self.json = self.response.json()
