@@ -1,0 +1,5 @@
+checkout_button_loc = "[name='website_sale_main_button']"
+order_overview_loc = "xpath=//h3[text()='Order overview']"
+continue_shopping_link_loc = "a[href='/shop']"
+remove_button_loc = "a[title='Remove from cart']"
+empty_cart_message_loc = ".js_cart_lines"
