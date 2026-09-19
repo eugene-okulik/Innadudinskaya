@@ -1,0 +1,10 @@
+/dev/null - character special file (c)
+/dev/zero - character special file (c)
+/dev/sda - block special file (b) #на учебном сервере файла /dev/sda нет, диск называется /dev/vda,
+                                   но тип у него тот же — block special file
+/dev/tty - character special file (c)
+/root - directory (d)
+/etc/passwd - regular file (-)
+/proc/mounts - symbolic link (l)
+/bin/ls - regular file (-)
+/bin/zcat - regular file (-)
